@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface MUKUserNotificationController : NSObject
-
+@property (nonatomic, weak, readonly) UIViewController *viewController;
+- (instancetype)initWithViewController:(UIViewController *)viewController;
 @end
