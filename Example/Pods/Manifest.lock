@@ -1,0 +1,14 @@
+PODS:
+  - MUKUserNotificationController (0.1.0)
+
+DEPENDENCIES:
+  - MUKUserNotificationController (from `../`)
+
+EXTERNAL SOURCES:
+  MUKUserNotificationController:
+    :path: ../
+
+SPEC CHECKSUMS:
+  MUKUserNotificationController: 4f7016d38495530099ad137bb71492b26ed959a6
+
+COCOAPODS: 0.34.4
