@@ -8,18 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		069DF4921A02AC7500AAF3E3 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 069DF48F1A02AC7500AAF3E3 /* .gitkeep */; };
-		069DF4961A02AC8D00AAF3E3 /* MUKUserNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 069DF4951A02AC8D00AAF3E3 /* MUKUserNotificationController.m */; };
-		069DF4991A02AD6200AAF3E3 /* MUKUserNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 069DF4981A02AD6200AAF3E3 /* MUKUserNotification.m */; };
+		069DF49C1A02AE3500AAF3E3 /* CommandsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 069DF49B1A02AE3500AAF3E3 /* CommandsTableViewController.m */; };
 		30BDA5447B147F711059B07F /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 902488E5CE574F7D9BA1F6C5 /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* MUKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* MUKAppDelegate.m */; };
+		6003F59E195388D20070C39A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* AppDelegate.m */; };
 		6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6003F59F195388D20070C39A /* Main_iPhone.storyboard */; };
 		6003F5A4195388D20070C39A /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A2195388D20070C39A /* Main_iPad.storyboard */; };
-		6003F5A7195388D20070C39A /* MUKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* MUKViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -45,6 +43,8 @@
 		069DF4951A02AC8D00AAF3E3 /* MUKUserNotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKUserNotificationController.m; sourceTree = "<group>"; };
 		069DF4971A02AD6200AAF3E3 /* MUKUserNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKUserNotification.h; sourceTree = "<group>"; };
 		069DF4981A02AD6200AAF3E3 /* MUKUserNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKUserNotification.m; sourceTree = "<group>"; };
+		069DF49A1A02AE3500AAF3E3 /* CommandsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandsTableViewController.h; sourceTree = "<group>"; };
+		069DF49B1A02AE3500AAF3E3 /* CommandsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandsTableViewController.m; sourceTree = "<group>"; };
 		1E69C14550F749A6F03AD0FF /* Pods-MUKUserNotificationController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKUserNotificationController.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKUserNotificationController/Pods-MUKUserNotificationController.release.xcconfig"; sourceTree = "<group>"; };
 		1EED2D1742B30AAC1D60AEA5 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F1D9EC14D592F1A5818E8BD /* MUKUserNotificationController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MUKUserNotificationController.podspec; path = ../MUKUserNotificationController.podspec; sourceTree = "<group>"; };
@@ -58,12 +58,10 @@
 		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6003F59B195388D20070C39A /* MUKUserNotificationController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MUKUserNotificationController-Prefix.pch"; sourceTree = "<group>"; };
-		6003F59C195388D20070C39A /* MUKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* MUKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKAppDelegate.m; sourceTree = "<group>"; };
+		6003F59C195388D20070C39A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6003F59D195388D20070C39A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6003F5A0195388D20070C39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		6003F5A3195388D20070C39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		6003F5A5195388D20070C39A /* MUKViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKViewController.h; sourceTree = "<group>"; };
-		6003F5A6195388D20070C39A /* MUKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -170,14 +168,14 @@
 		6003F593195388D20070C39A /* Test App */ = {
 			isa = PBXGroup;
 			children = (
-				6003F59C195388D20070C39A /* MUKAppDelegate.h */,
-				6003F59D195388D20070C39A /* MUKAppDelegate.m */,
+				6003F59C195388D20070C39A /* AppDelegate.h */,
+				6003F59D195388D20070C39A /* AppDelegate.m */,
 				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
 				6003F5A2195388D20070C39A /* Main_iPad.storyboard */,
-				6003F5A5195388D20070C39A /* MUKViewController.h */,
-				6003F5A6195388D20070C39A /* MUKViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				069DF49A1A02AE3500AAF3E3 /* CommandsTableViewController.h */,
+				069DF49B1A02AE3500AAF3E3 /* CommandsTableViewController.m */,
 			);
 			name = "Test App";
 			path = MUKUserNotificationController;
@@ -401,10 +399,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				069DF4991A02AD6200AAF3E3 /* MUKUserNotification.m in Sources */,
-				6003F59E195388D20070C39A /* MUKAppDelegate.m in Sources */,
-				069DF4961A02AC8D00AAF3E3 /* MUKUserNotificationController.m in Sources */,
-				6003F5A7195388D20070C39A /* MUKViewController.m in Sources */,
+				6003F59E195388D20070C39A /* AppDelegate.m in Sources */,
+				069DF49C1A02AE3500AAF3E3 /* CommandsTableViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
