@@ -45,6 +45,10 @@
 		069DF4981A02AD6200AAF3E3 /* MUKUserNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKUserNotification.m; sourceTree = "<group>"; };
 		069DF49A1A02AE3500AAF3E3 /* CommandsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandsTableViewController.h; sourceTree = "<group>"; };
 		069DF49B1A02AE3500AAF3E3 /* CommandsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandsTableViewController.m; sourceTree = "<group>"; };
+		069DF49E1A02B06200AAF3E3 /* MUKUserNotificationWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MUKUserNotificationWindow.h; sourceTree = "<group>"; };
+		069DF49F1A02B06200AAF3E3 /* MUKUserNotificationWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MUKUserNotificationWindow.m; sourceTree = "<group>"; };
+		069DF4A11A02B22300AAF3E3 /* MUKUserNotificationWindowViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUKUserNotificationWindowViewController.h; sourceTree = "<group>"; };
+		069DF4A21A02B22300AAF3E3 /* MUKUserNotificationWindowViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUKUserNotificationWindowViewController.m; sourceTree = "<group>"; };
 		1E69C14550F749A6F03AD0FF /* Pods-MUKUserNotificationController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MUKUserNotificationController.release.xcconfig"; path = "Pods/Target Support Files/Pods-MUKUserNotificationController/Pods-MUKUserNotificationController.release.xcconfig"; sourceTree = "<group>"; };
 		1EED2D1742B30AAC1D60AEA5 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1F1D9EC14D592F1A5818E8BD /* MUKUserNotificationController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MUKUserNotificationController.podspec; path = ../MUKUserNotificationController.podspec; sourceTree = "<group>"; };
@@ -122,12 +126,24 @@
 		069DF4901A02AC7500AAF3E3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				069DF49D1A02B04E00AAF3E3 /* Private */,
 				069DF4941A02AC8D00AAF3E3 /* MUKUserNotificationController.h */,
 				069DF4951A02AC8D00AAF3E3 /* MUKUserNotificationController.m */,
 				069DF4971A02AD6200AAF3E3 /* MUKUserNotification.h */,
 				069DF4981A02AD6200AAF3E3 /* MUKUserNotification.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		069DF49D1A02B04E00AAF3E3 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				069DF49E1A02B06200AAF3E3 /* MUKUserNotificationWindow.h */,
+				069DF49F1A02B06200AAF3E3 /* MUKUserNotificationWindow.m */,
+				069DF4A11A02B22300AAF3E3 /* MUKUserNotificationWindowViewController.h */,
+				069DF4A21A02B22300AAF3E3 /* MUKUserNotificationWindowViewController.m */,
+			);
+			path = Private;
 			sourceTree = "<group>";
 		};
 		6003F581195388D10070C39A = {

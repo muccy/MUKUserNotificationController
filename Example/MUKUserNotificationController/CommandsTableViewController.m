@@ -7,6 +7,7 @@
 //
 
 #import "CommandsTableViewController.h"
+#import <MUKUserNotificationController/MUKUserNotificationController.h>
 
 @interface Command : NSObject
 @property (nonatomic, copy) NSString *title;
@@ -18,6 +19,7 @@
 
 @interface CommandsTableViewController ()
 @property (nonatomic) NSArray *commands;
+@property (nonatomic) MUKUserNotificationController *userNotificationController;
 @end
 
 @implementation CommandsTableViewController
@@ -49,6 +51,7 @@
 static void CommonInit(CommandsTableViewController *me) {
     me.title = @"Example";
     me->_commands = [me newCommands];
+    me->_userNotificationController = [[MUKUserNotificationController alloc] initWithViewController:me];
 }
 
 #pragma mark - Private - Commands
@@ -67,7 +70,8 @@ static void CommonInit(CommandsTableViewController *me) {
     command = [[Command alloc] init];
     command.title = @"Show Sticky Notification";
     command.action = ^{
-        //
+        MUKUserNotification *notification = [[MUKUserNotification alloc] init];
+        [weakSelf.userNotificationController showNotification:notification animated:YES];
     };
     [commands addObject:command];
     

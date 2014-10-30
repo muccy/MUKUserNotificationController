@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MUKUserNotificationController/MUKUserNotification.h>
 
 @interface MUKUserNotificationController : NSObject
 @property (nonatomic, weak, readonly) UIViewController *viewController;
 - (instancetype)initWithViewController:(UIViewController *)viewController;
+
+- (void)showNotification:(MUKUserNotification *)notification animated:(BOOL)animated;
 @end
