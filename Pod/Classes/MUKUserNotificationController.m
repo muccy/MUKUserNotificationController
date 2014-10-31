@@ -1,11 +1,3 @@
-//
-//  MUKUserNotificationController.m
-//  MUKUserNotificationController
-//
-//  Created by Marco on 30/10/14.
-//  Copyright (c) 2014 Muccy. All rights reserved.
-//
-
 #import "MUKUserNotificationController.h"
 #import "MUKUserNotificationWindow.h"
 #import "MUKUserNotificationWindowViewController.h"
@@ -68,6 +60,20 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     return nil;
 }
 
+- (UIWindow *)notificationWindow {
+    if (!_notificationWindow) {
+        MUKUserNotificationWindow *notificationWindow = [[MUKUserNotificationWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        notificationWindow.backgroundColor = DEBUG_NOTIFICATION_WINDOW_BACKGROUND ? [[UIColor purpleColor] colorWithAlphaComponent:0.2f] : [UIColor clearColor];
+        notificationWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        notificationWindow.windowLevel = UIWindowLevelStatusBar;
+        notificationWindow.rootViewController = [MUKUserNotificationWindowViewController new];
+        notificationWindow.rootViewController.view.clipsToBounds = YES;
+        self.notificationWindow = notificationWindow;
+    }
+    
+    return _notificationWindow;
+}
+
 #pragma mark - Expiration
 
 - (void)notificationWillExpire:(MUKUserNotification *)notification {
@@ -80,9 +86,9 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
 
 #pragma mark - Display
 
-- (void)showNotification:(MUKUserNotification *)notification animated:(BOOL)animated
+- (void)showNotification:(MUKUserNotification *)notification animated:(BOOL)animated completion:(void (^)(BOOL completed))completionHandler
 {
-    [self showNotification:notification addToQueue:YES passingTest:nil animated:animated completion:nil];
+    [self showNotification:notification addToQueue:YES passingTest:nil animated:animated completion:completionHandler];
 }
 
 - (void)hideNotification:(MUKUserNotification *)notification animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
@@ -111,56 +117,16 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
         // Remove view from view hierarchy
         [notificationView removeFromSuperview];
         
+        // If it's last notification hide window
+        if ([self.notificationQueue count] == 0) {
+            self.notificationWindow.hidden = YES;
+        }
+        
         // Notify completion if needed
         if (completionHandler) {
             completionHandler(finished);
         }
     }];
-}
-
-#pragma mark - Private — Notification Window
-
-- (UIWindow *)notificationWindow {
-    if (!_notificationWindow) {
-        MUKUserNotificationWindow *notificationWindow = [[MUKUserNotificationWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        notificationWindow.backgroundColor = DEBUG_NOTIFICATION_WINDOW_BACKGROUND ? [[UIColor purpleColor] colorWithAlphaComponent:0.2f] : [UIColor clearColor];
-        notificationWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        notificationWindow.windowLevel = UIWindowLevelStatusBar;
-        notificationWindow.rootViewController = [MUKUserNotificationWindowViewController new];
-        notificationWindow.rootViewController.view.clipsToBounds = YES;
-        self.notificationWindow = notificationWindow;
-    }
-    
-    return _notificationWindow;
-}
-
-#pragma mark - Private - Queue
-
-- (void)addNotification:(MUKUserNotification *)notification {
-    if (notification) {
-        [self.notificationQueue addObject:notification];
-    }
-}
-
-- (void)removeNotification:(MUKUserNotification *)notification {
-    if (notification) {
-        [self.notificationQueue removeObject:notification];
-    }
-}
-
-#pragma mark - Private - Rate Limit
-
-- (BOOL)hasPassedMinimumIntervalFromLastNotification {
-    if (!self.lastNotificationPresentationDate) {
-        return YES;
-    }
-    
-    return [self missingTimeIntervalToNextPresentableNotification] > 0.0;
-}
-
-- (NSTimeInterval)missingTimeIntervalToNextPresentableNotification {
-    NSTimeInterval interval = -[self.lastNotificationPresentationDate timeIntervalSinceNow];
-    return interval - self.minimumIntervalBetweenNotifications;
 }
 
 #pragma mark - Notification View
@@ -199,11 +165,9 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     view.textLabel.textColor = notification.textColor ?: [UIColor whiteColor];
     view.backgroundColor = notification.color ?: self.viewController.view.tintColor;
     
-    // TODO: Set gesture recognizer actions
-    /*
+    // Set gesture recognizer actions
     [view.tapGestureRecognizer addTarget:self action:@selector(handleNotificationViewTapGestureRecognizer:)];
     [view.panGestureRecognizer addTarget:self action:@selector(handleNotificationViewPanGestureRecognizer:)];
-     */
 }
 
 - (CGRect)frameForView:(MUKUserNotificationView *)view notification:(MUKUserNotification *)notification minimumSize:(CGSize)minimumSize
@@ -214,18 +178,69 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     
     // TODO: navigation bar snap
     /*
-    if (self.notificationViewsSnapToNavigationBar) {
-        CGFloat const affectedNavigationBarsMaxY = [self affectedNavigationBarsMaxY];
-        CGFloat const diff = CGRectGetMaxY(frame) - affectedNavigationBarsMaxY;
-        
-        if (diff < 0.0f && fabsf(diff) < kNavigationBarSnapDifference) {
-            frame.size.height -= diff;
-        }
-    }
+     if (self.notificationViewsSnapToNavigationBar) {
+     CGFloat const affectedNavigationBarsMaxY = [self affectedNavigationBarsMaxY];
+     CGFloat const diff = CGRectGetMaxY(frame) - affectedNavigationBarsMaxY;
+     
+     if (diff < 0.0f && fabsf(diff) < kNavigationBarSnapDifference) {
+     frame.size.height -= diff;
+     }
+     }
      */
     
     return frame;
 }
+
+- (void)didTapView:(MUKUserNotificationView *)view forNotification:(MUKUserNotification *)notification
+{
+    if (notification.tapGestureHandler) {
+        notification.tapGestureHandler(self, view);
+    }
+    else {
+        [self hideNotification:notification animated:YES completion:nil];
+    }
+}
+
+- (void)didPanUpView:(MUKUserNotificationView *)view forNotification:(MUKUserNotification *)notification
+{
+    if (notification.panUpGestureHandler) {
+        notification.panUpGestureHandler(self, view);
+    }
+    else {
+        [self hideNotification:notification animated:YES completion:nil];
+    }
+}
+
+#pragma mark - Private - Queue
+
+- (void)addNotification:(MUKUserNotification *)notification {
+    if (notification) {
+        [self.notificationQueue addObject:notification];
+    }
+}
+
+- (void)removeNotification:(MUKUserNotification *)notification {
+    if (notification) {
+        [self.notificationQueue removeObject:notification];
+    }
+}
+
+#pragma mark - Private - Rate Limit
+
+- (BOOL)hasPassedMinimumIntervalFromLastNotification {
+    if (!self.lastNotificationPresentationDate) {
+        return YES;
+    }
+    
+    return [self missingTimeIntervalToNextPresentableNotification] > 0.0;
+}
+
+- (NSTimeInterval)missingTimeIntervalToNextPresentableNotification {
+    NSTimeInterval interval = -[self.lastNotificationPresentationDate timeIntervalSinceNow];
+    return interval - self.minimumIntervalBetweenNotifications;
+}
+
+#pragma mark - Private — Notification View
 
 + (CGFloat)actualStatusBarHeight {
     CGRect const statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
@@ -244,6 +259,34 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
 
 - (CGSize)minimumUserNotificationViewSize {
     return CGSizeMake(CGRectGetWidth(self.viewController.view.bounds), self.statusBarHeight);
+}
+
+- (void)handleNotificationViewTapGestureRecognizer:(UITapGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        MUKUserNotificationView *view = (MUKUserNotificationView *)recognizer.view;
+        MUKUserNotification *notification = [self notificationForView:view];
+        
+        if (view && notification) {
+            [self didTapView:view forNotification:notification];
+        }
+    }
+}
+
+- (void)handleNotificationViewPanGestureRecognizer:(UIPanGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGPoint const translation = [recognizer translationInView:recognizer.view];
+        if (translation.y < 0.0f && fabsf(translation.y) > 0.3f * CGRectGetHeight(recognizer.view.frame))
+        {
+            MUKUserNotificationView *view = (MUKUserNotificationView *)recognizer.view;
+            MUKUserNotification *notification = [self notificationForView:view];
+            
+            if (view && notification) {
+                [self didPanUpView:view forNotification:notification];
+            }
+        }
+    }
 }
 
 #pragma mark - Private — Notification <-> view mapping
@@ -353,16 +396,8 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     
     // Animate in
     NSTimeInterval const duration = animated ? kNotificationViewAnimationDuration : 0.0;
-    [UIView animateWithDuration:duration delay:0.0 usingSpringWithDamping:kNotificationViewAnimationSpringDamping initialSpringVelocity:kNotificationViewAnimationSpringVelocity options:0 animations:^{
-        // TODO: Hide status bar?
-        /*
-        [self setNeedsStatusBarAppearanceUpdate];
-        
-        // Resize content view controller if needed
-        if (shouldResizeContentViewController) {
-            self.contentViewController.view.frame = [self contentViewControllerFrameWithInsets:UIEdgeInsetsMake(self.statusBarHeight, 0.0f, 0.0f, 0.0f)];
-        }
-        */
+    [UIView animateWithDuration:duration delay:0.0 usingSpringWithDamping:kNotificationViewAnimationSpringDamping initialSpringVelocity:kNotificationViewAnimationSpringVelocity options:0 animations:^
+    {
         // Move notification view in
         notificationView.transform = targetTransform;
     } completion:^(BOOL inAnimationFinished) {
@@ -376,103 +411,6 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
             completionHandler(inAnimationFinished);
         }
     }];
-    
-    
-    
-    
-    
-    /*
-    
-    
-    
-    
-    // Get real status bar height if available
-    [self captureStatusBarHeightIfAvailable];
-    
-    // Don't touch content view controller if status bar is hidden and we are
-    // not in landscape (because UIKit implementation of UINavigationController)
-    BOOL const portraitStatusBar = UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-    BOOL const statusBarHidden = [[UIApplication sharedApplication] isStatusBarHidden];
-    BOOL const shouldResizeContentViewController = !statusBarHidden && portraitStatusBar && [self couldHideStatusBar];
-    
-    // Mark if there is a gap above content view controller, preserving
-    // previous positive state
-    if (!self.hasGapAboveContentViewController) {
-        self.hasGapAboveContentViewController = !statusBarHidden && [self couldHideStatusBar];
-    }
-    
-    // Mark if navigation bar in landscape will be messed up, preserving
-    // previous positive state
-    if (!self.needsNavigationBarAdjustmentInLandscape) {
-        self.needsNavigationBarAdjustmentInLandscape = (portraitStatusBar || self.splitViewController) && !statusBarHidden && [self couldHideStatusBar];
-    }
-    
-    // Overlay snapshot to cover animation glitches
-    BOOL const needsSnapshot = shouldResizeContentViewController && !self.currentSnapshotView;
-    UIView *snapshotView = nil;
-    if (needsSnapshot) {
-        // Create snapshot
-        snapshotView = [self newContentViewControllerSnapshotView];
-        [self insertContentViewControllerSnapshotView:snapshotView];
-    }
-    
-    // Create notification view
-    MUKUserNotificationView *notificationView = [self newViewForNotification:notification];
-    [self configureView:notificationView forNotification:notification];
-    
-    // If status bar is not replaced, contents should not overlap with it
-    [self adjustNotificationViewPaddingIfNeeded:notificationView];
-    
-    // Adjust frame
-    notificationView.frame = [self frameForView:notificationView notification:notification minimumSize:[self minimumUserNotificationViewSize]];
-    
-    // Map view to notification (and viceversa)
-    [self setView:notificationView forUserNotification:notification];
-    [self setUserNotification:notification forView:notificationView];
-    
-    // Move offscreen
-    CGAffineTransform const targetTransform = notificationView.transform;
-    notificationView.transform = CGAffineTransformMakeTranslation(0.0f, -CGRectGetHeight(notificationView.frame));
-    
-    // Insert in view hierarchy aboe averything
-    [self.view addSubview:notificationView];
-    
-    // Animate in
-    NSTimeInterval const duration = animated ? kNotificationViewAnimationDuration : 0.0;
-    [UIView animateWithDuration:duration delay:0.0 usingSpringWithDamping:kNotificationViewAnimationSpringDamping initialSpringVelocity:kNotificationViewAnimationSpringVelocity options:0 animations:^{
-        // Hide status bar
-        [self setNeedsStatusBarAppearanceUpdate];
-        
-        // Resize content view controller if needed
-        if (shouldResizeContentViewController) {
-            self.contentViewController.view.frame = [self contentViewControllerFrameWithInsets:UIEdgeInsetsMake(self.statusBarHeight, 0.0f, 0.0f, 0.0f)];
-        }
-        
-        // Move notification view in
-        notificationView.transform = targetTransform;
-    } completion:^(BOOL inAnimationFinished) {
-        void (^completionBlock)(BOOL) = ^(BOOL animationsFinished) {
-            // Set expiration if needed
-            if ([self notificationCanExpire:notification]) {
-                [self scheduleExpirationForNotification:notification];
-            }
-            
-            // Invoke completion handler if any
-            if (completionHandler) {
-                completionHandler(animationsFinished);
-            }
-        };
-        
-        if (snapshotView) {
-            [self removeContentViewControllerSnapshotView:snapshotView animated:animated completion:^(BOOL outAnimationFinished) {
-                completionBlock(inAnimationFinished && outAnimationFinished);
-            }];
-        }
-        else {
-            completionBlock(inAnimationFinished);
-        }
-    }];
-     */
 }
 
 @end

@@ -2,6 +2,9 @@
 
 extern NSTimeInterval const MUKUserNotificationDurationInfinite;
 
+@class MUKUserNotificationView, MUKUserNotificationController;
+typedef void (^MUKUserNotificationGestureHandler)(MUKUserNotificationController *controller, MUKUserNotificationView *view);
+
 @interface MUKUserNotification : NSObject
 /**
  Title of notification.
@@ -36,4 +39,14 @@ extern NSTimeInterval const MUKUserNotificationDurationInfinite;
  You could use userInfo in order to find your notification between other ones.
  */
 @property (nonatomic) id userInfo;
+/**
+ Tap handler.
+ This block is called once user taps inside notification view.
+ */
+@property (nonatomic, copy) MUKUserNotificationGestureHandler tapGestureHandler;
+/**
+ Pan up handler.
+ This block is called once user pan up inside notification view.
+ */
+@property (nonatomic, copy) MUKUserNotificationGestureHandler panUpGestureHandler;
 @end
