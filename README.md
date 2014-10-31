@@ -1,6 +1,6 @@
 # MUKUserNotificationController
 
-[![CI Status](http://img.shields.io/travis/Muccy/MUKUserNotificationController.svg?style=flat)](https://travis-ci.org/Muccy/MUKUserNotificationController)
+[![CI Status](http://img.shields.io/travis/muccy/MUKUserNotificationController.svg?style=flat)](https://travis-ci.org/muccy/MUKUserNotificationController)
 [![Version](https://img.shields.io/cocoapods/v/MUKUserNotificationController.svg?style=flat)](http://cocoadocs.org/docsets/MUKUserNotificationController)
 [![License](https://img.shields.io/cocoapods/l/MUKUserNotificationController.svg?style=flat)](http://cocoadocs.org/docsets/MUKUserNotificationController)
 [![Platform](https://img.shields.io/cocoapods/p/MUKUserNotificationController.svg?style=flat)](http://cocoadocs.org/docsets/MUKUserNotificationController)
