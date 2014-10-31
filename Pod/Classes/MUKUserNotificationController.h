@@ -29,10 +29,14 @@ extern NSTimeInterval const MUKUserNotificationControllerDefaultMinimumIntervalB
 @property (nonatomic) NSTimeInterval minimumIntervalBetweenNotifications;
 /**
  Designated initializer.
- @param viewController The view controller which leads status bar style and visibility.
+ @param viewController The view controller which leads status bar style and visibility. If you pass nil, it uses key window's root view controller.
  @return A fully init'd instance.
  */
 - (instancetype)initWithViewController:(UIViewController *)viewController;
+/**
+ Convenience singleton bound to key window's root view controller.
+ */
++ (instancetype)defaultController;
 @end
 
 @interface MUKUserNotificationController (Display)

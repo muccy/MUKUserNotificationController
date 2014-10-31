@@ -21,8 +21,8 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
 @end
 
 @implementation MUKUserNotificationController
-@dynamic notifications;
-@dynamic visibleNotification;
+@dynamic notifications, visibleNotification;
+@synthesize viewController = _viewController;
 
 - (instancetype)initWithViewController:(UIViewController *)viewController {
     self = [super init];
@@ -38,10 +38,28 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
 }
 
 - (instancetype)init {
-    return [self initWithViewController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
+    return [self initWithViewController:nil];
+}
+
++ (instancetype)defaultController {
+    static MUKUserNotificationController *controller = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        controller = [[[self class] alloc] initWithViewController:nil];
+    });
+    
+    return controller;
 }
 
 #pragma mark - Accessors
+
+- (UIViewController *)viewController {
+    if (!_viewController) {
+        return [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    }
+    
+    return _viewController;
+}
 
 - (NSArray *)notifications {
     return [self.notificationQueue copy];
