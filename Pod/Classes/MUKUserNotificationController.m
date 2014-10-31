@@ -2,7 +2,7 @@
 #import "MUKUserNotificationWindow.h"
 #import "MUKUserNotificationWindowViewController.h"
 
-#define DEBUG_NOTIFICATION_WINDOW_BACKGROUND    1
+#define DEBUG_NOTIFICATION_WINDOW_BACKGROUND    0
 
 NSTimeInterval const MUKUserNotificationControllerDefaultMinimumIntervalBetweenNotifications = 1.0f;
 
