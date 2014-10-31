@@ -63,7 +63,7 @@ static void CommonInit(CommandsTableViewController *me) {
     Command *command = [[Command alloc] init];
     command.title = @"Hide Displayed Notification";
     command.action = ^{
-        //
+        [weakSelf.userNotificationController hideNotification:weakSelf.userNotificationController.visibleNotification animated:YES completion:nil];
     };
     [commands addObject:command];
     
@@ -71,14 +71,25 @@ static void CommonInit(CommandsTableViewController *me) {
     command.title = @"Show Sticky Notification";
     command.action = ^{
         MUKUserNotification *notification = [[MUKUserNotification alloc] init];
-        [weakSelf.userNotificationController showNotification:notification animated:YES];
+        notification.title = @"Sticky Notification";
+        notification.tapGestureHandler = ^(MUKUserNotificationController *c, MUKUserNotificationView *v) {};
+        notification.panUpGestureHandler = ^(MUKUserNotificationController *c, MUKUserNotificationView *v) {};
+        notification.color = [UIColor colorWithRed:0.0f green:0.85f blue:0.0f alpha:1.0f];
+        
+        [weakSelf.userNotificationController showNotification:notification animated:YES completion:nil];
     };
     [commands addObject:command];
     
     command = [[Command alloc] init];
     command.title = @"Show Alert Notification";
     command.action = ^{
-        //
+        MUKUserNotification *notification = [[MUKUserNotification alloc] init];
+        notification.title = @"Alert Notification";
+        notification.text = @"More text to explain alert. This text could also split in multiple lines in order to give user more detail about this notification.";
+        notification.duration = 1.5;
+        notification.color = [UIColor redColor];
+        
+        [weakSelf.userNotificationController showNotification:notification animated:YES completion:nil];
     };
     [commands addObject:command];
     
