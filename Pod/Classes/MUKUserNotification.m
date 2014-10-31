@@ -8,6 +8,7 @@ NSTimeInterval const MUKUserNotificationDurationInfinite = -1.0;
     self = [super init];
     if (self) {
         _duration = MUKUserNotificationDurationInfinite;
+        _snapsToNavigationBar = YES;
     }
     
     return self;

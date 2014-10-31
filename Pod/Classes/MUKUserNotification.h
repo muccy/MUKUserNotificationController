@@ -35,6 +35,13 @@ typedef void (^MUKUserNotificationGestureHandler)(MUKUserNotificationController 
  */
 @property (nonatomic) UIColor *textColor;
 /**
+ Notification views tend to adapt to navigation bar height.
+ Default is YES. If YES and if notification view height is not too far from
+ navigation bar one, the notification view's frame is slightly increased in
+ order to fill navigation bar space.
+ */
+@property (nonatomic) BOOL snapsToNavigationBar;
+/**
  Additional object you could attach to notification.
  You could use userInfo in order to find your notification between other ones.
  */

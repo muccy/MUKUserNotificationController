@@ -4,7 +4,13 @@
 
 extern NSTimeInterval const MUKUserNotificationControllerDefaultMinimumIntervalBetweenNotifications;
 
+/**
+ An object which displays user notifications on top of status bar.
+ */
 @interface MUKUserNotificationController : NSObject
+/**
+ The view controller which leads status bar style and visibility.
+ */
 @property (nonatomic, weak, readonly) UIViewController *viewController;
 /**
  Notifications which are displayed or pending (due rate limit).
@@ -21,7 +27,11 @@ extern NSTimeInterval const MUKUserNotificationControllerDefaultMinimumIntervalB
  It defaults to `MUKUserNotificationControllerDefaultMinimumIntervalBetweenNotifications`.
  */
 @property (nonatomic) NSTimeInterval minimumIntervalBetweenNotifications;
-
+/**
+ Designated initializer.
+ @param viewController The view controller which leads status bar style and visibility.
+ @return A fully init'd instance.
+ */
 - (instancetype)initWithViewController:(UIViewController *)viewController;
 @end
 
@@ -109,4 +119,16 @@ extern NSTimeInterval const MUKUserNotificationControllerDefaultMinimumIntervalB
  @param notification The notification which view displays.
  */
 - (void)didPanUpView:(MUKUserNotificationView *)view forNotification:(MUKUserNotification *)notification;
+@end
+
+@interface MUKUserNotificationController (NavigationControllers)
+/**
+ Navigation controllers affected by notification presentation.
+ Default implementation does its best to autodiscover nested navigation controllers,
+ by checking tab bar controllers and split view controllers.
+ @return An array of all navigation controllers affected by notification view
+ presentation. Those view controllers will be used in order to find navigation
+ bar height.
+ */
+- (NSArray *)affectedNavigationControllers;
 @end

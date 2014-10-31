@@ -176,21 +176,19 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
 
 - (CGRect)frameForView:(MUKUserNotificationView *)view notification:(MUKUserNotification *)notification minimumSize:(CGSize)minimumSize
 {
-    CGFloat const maxHeight = roundf(CGRectGetHeight(self.viewController.view.frame) * 0.35f);
+    CGFloat const maxHeight = roundf(CGRectGetHeight(self.notificationWindow.frame) * 0.35f);
     CGSize expandedSize = [view sizeThatFits:CGSizeMake(minimumSize.width, maxHeight)];
     CGRect frame = CGRectMake(0.0f, 0.0f, minimumSize.width, fmaxf(minimumSize.height, expandedSize.height));
     
-    // TODO: navigation bar snap
-    /*
-     if (self.notificationViewsSnapToNavigationBar) {
-     CGFloat const affectedNavigationBarsMaxY = [self affectedNavigationBarsMaxY];
-     CGFloat const diff = CGRectGetMaxY(frame) - affectedNavigationBarsMaxY;
-     
-     if (diff < 0.0f && fabsf(diff) < kNavigationBarSnapDifference) {
-     frame.size.height -= diff;
+    // Navigation bar snap
+     if (notification.snapsToNavigationBar) {
+         CGFloat const affectedNavigationBarsMaxY = [self affectedNavigationBarsMaxY];
+         CGFloat const diff = CGRectGetMaxY(frame) - affectedNavigationBarsMaxY;
+         
+         if (diff < 0.0f && fabsf(diff) < kNavigationBarSnapDifference) {
+             frame.size.height -= diff;
+         }
      }
-     }
-     */
     
     return frame;
 }
@@ -213,6 +211,39 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     else {
         [self hideNotification:notification animated:YES completion:nil];
     }
+}
+
+#pragma mark - Navigation Controllers
+
+- (NSArray *)affectedNavigationControllers {
+    NSMutableArray *navigationControllers = [[NSMutableArray alloc] init];
+    
+    if ([self.viewController isKindOfClass:[UINavigationController class]]) {
+        [navigationControllers addObject:self.viewController];
+    }
+    else if ([self.viewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tabBarController = (UITabBarController *)self.viewController;
+        
+        if ([tabBarController.selectedViewController isKindOfClass:[UINavigationController class]])
+        {
+            [navigationControllers addObject:tabBarController.selectedViewController];
+        }
+    }
+    else if (self.viewController.navigationController) {
+        [navigationControllers addObject:self.viewController.navigationController];
+    }
+    
+    if (self.viewController.splitViewController) {
+        for (UIViewController *viewController in self.viewController.splitViewController.viewControllers)
+        {
+            if ([viewController isKindOfClass:[UINavigationController class]])
+            {
+                [navigationControllers addObject:viewController];
+            }
+        } // for
+    }
+    
+    return [navigationControllers copy];
 }
 
 #pragma mark - Private - Queue
@@ -262,7 +293,7 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
 }
 
 - (CGSize)minimumUserNotificationViewSize {
-    return CGSizeMake(CGRectGetWidth(self.viewController.view.bounds), self.statusBarHeight);
+    return CGSizeMake(CGRectGetWidth(self.notificationWindow.bounds), self.statusBarHeight);
 }
 
 - (void)handleNotificationViewTapGestureRecognizer:(UITapGestureRecognizer *)recognizer
@@ -415,6 +446,24 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
             completionHandler(inAnimationFinished);
         }
     }];
+}
+
+#pragma mark - Private — Navigation Controllers
+
+- (CGFloat)affectedNavigationBarsMaxY {
+    CGFloat foundMaxY = -1.0f;
+    
+    for (UINavigationController *navigationController in [self affectedNavigationControllers])
+    {
+        CGRect const convertedNavigationBarFrame = [navigationController.navigationBar.superview convertRect:navigationController.navigationBar.frame toView:self.notificationWindow];
+        CGFloat const maxY = CGRectGetMaxY(convertedNavigationBarFrame);
+        
+        if (maxY > 0.0f) {
+            foundMaxY = fmaxf(foundMaxY, maxY);
+        }
+    } // for
+    
+    return foundMaxY;
 }
 
 @end
