@@ -66,8 +66,12 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
         notificationWindow.backgroundColor = DEBUG_NOTIFICATION_WINDOW_BACKGROUND ? [[UIColor purpleColor] colorWithAlphaComponent:0.2f] : [UIColor clearColor];
         notificationWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         notificationWindow.windowLevel = UIWindowLevelStatusBar;
-        notificationWindow.rootViewController = [MUKUserNotificationWindowViewController new];
-        notificationWindow.rootViewController.view.clipsToBounds = YES;
+        
+        MUKUserNotificationWindowViewController *rootViewController = [MUKUserNotificationWindowViewController new];
+        rootViewController.view.clipsToBounds = YES;
+        rootViewController.notificationController = self;
+        notificationWindow.rootViewController = rootViewController;
+        
         self.notificationWindow = notificationWindow;
     }
     

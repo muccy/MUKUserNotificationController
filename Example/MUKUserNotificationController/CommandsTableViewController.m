@@ -1,13 +1,7 @@
-//
-//  CommandsTableViewController.m
-//  MUKUserNotificationController
-//
-//  Created by Marco on 30/10/14.
-//  Copyright (c) 2014 Muccy. All rights reserved.
-//
-
 #import "CommandsTableViewController.h"
 #import <MUKUserNotificationController/MUKUserNotificationController.h>
+
+#define DEBUG_STATUS_BAR_HIDDEN         0
 
 @interface Command : NSObject
 @property (nonatomic, copy) NSString *title;
@@ -45,6 +39,14 @@
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
+
+#pragma mark - Overrides
+
+#if DEBUG_STATUS_BAR_HIDDEN
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+#endif
 
 #pragma mark - Private
 
