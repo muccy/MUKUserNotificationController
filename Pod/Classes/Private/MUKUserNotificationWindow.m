@@ -1,13 +1,17 @@
-//
-//  MUKUserNotificationWindow.m
-//  MUKUserNotificationController
-//
-//  Created by Marco on 30/10/14.
-//  Copyright (c) 2014 Muccy. All rights reserved.
-//
-
 #import "MUKUserNotificationWindow.h"
+#import "MUKUserNotificationView.h"
 
 @implementation MUKUserNotificationWindow
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent*)event {
+    for (UIView *subview in self.subviews) {
+        if ([[subview hitTest:[self convertPoint:point toView:subview] withEvent:event] isKindOfClass:[MUKUserNotificationView class]])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 @end
