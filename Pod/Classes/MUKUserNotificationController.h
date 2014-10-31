@@ -31,7 +31,9 @@ extern NSTimeInterval const MUKUserNotificationControllerDefaultMinimumIntervalB
 @property (nonatomic) NSTimeInterval minimumIntervalBetweenNotifications;
 
 - (instancetype)initWithViewController:(UIViewController *)viewController;
+@end
 
+@interface MUKUserNotificationController (Display)
 - (void)showNotification:(MUKUserNotification *)notification animated:(BOOL)animated;
 - (void)hideNotification:(MUKUserNotification *)notification animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler;
 @end

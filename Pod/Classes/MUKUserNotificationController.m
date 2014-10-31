@@ -49,6 +49,37 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     return [self initWithViewController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
 }
 
+#pragma mark - Accessors
+
+- (NSArray *)notifications {
+    return [self.notificationQueue copy];
+}
+
+- (MUKUserNotification *)visibleNotification {
+    for (MUKUserNotification *notification in [self.notifications reverseObjectEnumerator])
+    {
+        // if it has not an associated view, it means notification view has not
+        // been presented yet (probabily because of rate limit)
+        if ([self viewForNotification:notification]) {
+            return notification;
+        }
+    }
+    
+    return nil;
+}
+
+#pragma mark - Expiration
+
+- (void)notificationWillExpire:(MUKUserNotification *)notification {
+    //
+}
+
+- (void)notificationDidExpire:(MUKUserNotification *)notification {
+    //
+}
+
+#pragma mark - Display
+
 - (void)showNotification:(MUKUserNotification *)notification animated:(BOOL)animated
 {
     [self showNotification:notification addToQueue:YES passingTest:nil animated:animated completion:nil];
@@ -85,35 +116,6 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
             completionHandler(finished);
         }
     }];
-}
-
-#pragma mark - Accessors
-
-- (NSArray *)notifications {
-    return [self.notificationQueue copy];
-}
-
-- (MUKUserNotification *)visibleNotification {
-    for (MUKUserNotification *notification in [self.notifications reverseObjectEnumerator])
-    {
-        // if it has not an associated view, it means notification view has not
-        // been presented yet (probabily because of rate limit)
-        if ([self viewForNotification:notification]) {
-            return notification;
-        }
-    }
-    
-    return nil;
-}
-
-#pragma mark - Expiration
-
-- (void)notificationWillExpire:(MUKUserNotification *)notification {
-    //
-}
-
-- (void)notificationDidExpire:(MUKUserNotification *)notification {
-    //
 }
 
 #pragma mark - Private — Notification Window
@@ -280,7 +282,7 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     });
 }
 
-#pragma mark - Private - Show/Hide
+#pragma mark - Private - Display
 
 - (void)showNotification:(MUKUserNotification *)notification addToQueue:(BOOL)addToQueue passingTest:(BOOL (^)(void))testBlock animated:(BOOL)animated completion:(void (^)(BOOL))completionHandler
 {
@@ -343,8 +345,11 @@ static CGFloat const kNavigationBarSnapDifference = 14.0f;
     CGAffineTransform const targetTransform = notificationView.transform;
     notificationView.transform = CGAffineTransformMakeTranslation(0.0f, -CGRectGetHeight(notificationView.frame));
     
-    // Insert in view hierarchy aboe averything
+    // Insert in view hierarchy above averything
     [self.notificationWindow.rootViewController.view addSubview:notificationView];
+    
+    // Show notification window
+    self.notificationWindow.hidden = NO;
     
     // Animate in
     NSTimeInterval const duration = animated ? kNotificationViewAnimationDuration : 0.0;
